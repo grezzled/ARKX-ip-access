@@ -27,13 +27,12 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    res.render('index', { ip: req.ip })
+    const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    res.render('index', { ip: ipAddress })
 })
 
 app.get('/denied', (req, res) => {
-    // const ipAddress = req.headers['x-forwarded-for'] || req.ip;
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    
+    const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     res.render('denied', { ip: ipAddress })
 })
 
