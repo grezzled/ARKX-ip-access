@@ -20,6 +20,8 @@ const options = {
 const middleware = AccessControl(options);
 app.use(middleware);
 
+app.set('trust proxy', true);
+
 app.set('view engine', 'ejs')
 
 app.use(express.static('public'))
@@ -29,7 +31,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/denied', (req, res) => {
-    const ipAddress = req.headers['x-forwarded-for'] || req.ip;
+    // const ipAddress = req.headers['x-forwarded-for'] || req.ip;
+    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    
     res.render('denied', { ip: ipAddress })
 })
 
