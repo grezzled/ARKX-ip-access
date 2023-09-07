@@ -29,7 +29,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/denied', (req, res) => {
-    res.render('denied', { ip: req.ip })
+    const ipAddress = req.headers['x-forwarded-for'] || req.ip;
+    res.render('denied', { ip: ipAddress })
 })
 
 app.listen(PORT, () => {
